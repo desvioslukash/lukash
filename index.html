@@ -6,242 +6,129 @@
     <title>Generar desvío de saldo</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: #121212;
             color: #fff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
         }
-
         .phone {
             width: 100%;
             max-width: 450px;
             padding: 40px 20px;
             position: relative;
-            background-color: #121212;
-            /* Imagen de fondo del logo dorado */
-            background-image: url('https://images2.imgbox.com/71/3b/Lz0m6ny_o.jpg');
+            background-image: url('FONDO.jpg');
             background-repeat: no-repeat;
             background-position: center 45%;
             background-size: 85%;
             transition: filter 0.3s ease;
         }
-
         .blur { filter: blur(15px); pointer-events: none; }
-
-        h1 {
-            text-align: center;
-            font-size: 40px;
-            font-weight: 900;
-            margin-bottom: 30px;
-            line-height: 1;
-        }
-
-        .banks {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
+        h1 { text-align: center; font-size: 40px; font-weight: 900; margin-bottom: 30px; line-height: 1; color: #fff; }
+        .banks { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 30px; }
         .bank {
-            background: #fff;
-            border-radius: 40px;
-            width: 130px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 3px solid transparent;
-            overflow: hidden;
-            padding: 5px;
+            background: #fff; border-radius: 40px; width: 130px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease; border: 3px solid transparent;
+            overflow: hidden; padding: 5px;
         }
-
-        .bank img {
-            max-width: 85%;
-            max-height: 75%;
-            object-fit: contain;
-        }
-
-        .bank.active {
-            box-shadow: 0 0 20px 8px rgba(255, 212, 0, 0.7);
-            border: 2px solid #ffd400;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            font-size: 19px;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
+        .bank img { max-width: 85%; max-height: 80%; object-fit: contain; }
+        .bank.active { box-shadow: 0 0 20px 8px rgba(255, 212, 0, 0.7); border: 2px solid #ffd400; }
+        .input-group { margin-bottom: 20px; text-align: center; }
+        label { display: block; font-size: 19px; margin-bottom: 5px; font-weight: 500; }
         input {
-            width: 100%;
-            background: rgba(111, 111, 111, 0.85);
-            border: none;
-            border-radius: 25px;
-            padding: 15px;
-            color: #fff;
-            font-size: 18px;
-            text-align: center;
-            outline: none;
+            width: 100%; background: rgba(111, 111, 111, 0.8); border: none;
+            border-radius: 25px; padding: 15px; color: #fff; font-size: 18px;
+            text-align: center; outline: none;
         }
-
-        input::placeholder { color: #ccc; }
-
         .btn-enviar {
-            width: 180px;
-            background: #ffd400;
-            border: none;
-            border-radius: 20px;
-            padding: 10px;
-            font-size: 22px;
-            font-weight: 800;
-            cursor: pointer;
-            color: #000;
-            margin: 20px auto;
-            display: block;
+            width: 180px; background: #ffd400; border: none; border-radius: 20px;
+            padding: 10px; font-size: 22px; font-weight: 800; cursor: pointer;
+            color: #000; margin: 20px auto; display: block;
         }
-
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #ffd400;
-            text-decoration: underline;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
+        .footer { text-align: center; margin-top: 20px; color: #ffd400; text-decoration: underline; font-size: 18px; cursor: pointer; }
         .popup-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+            display: none; align-items: center; justify-content: center; z-index: 100;
         }
-
         .popup-overlay.show { display: flex; }
-
         .popup-card {
-            width: 260px;
-            height: 350px;
-            /* Imagen del check verde de éxito */
-            background-image: url('https://images2.imgbox.com/3d/8c/vYfzqV9_o.jpg');
-            background-size: cover;
-            background-position: center;
-            border-radius: 30px;
-            animation: popIn 0.3s ease-out;
+            width: 260px; height: 350px; background-image: url('CHECK.jpg');
+            background-size: cover; background-position: center; border-radius: 30px;
+            animation: popIn 0.3s ease-out; box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
         }
-
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
-
 <audio id="success-sound" src="https://www.soundjay.com/buttons/sounds/button-37.mp3" preload="auto"></audio>
-
 <div id="app" class="phone">
     <h1>Generar desvío<br>de saldo</h1>
-    
     <div class="banks">
-        <div class="bank" onclick="selectBank(this, 'Nequi')">
+        <div class="bank active" onclick="selectBank(this, 'Nequi')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Nequi_Logo.png/512px-Nequi_Logo.png" alt="Nequi">
         </div>
         <div class="bank" onclick="selectBank(this, 'Daviplata')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/DaviPlata_logo.png/512px-DaviPlata_logo.png" alt="Daviplata">
         </div>
-        <div class="bank active" onclick="selectBank(this, 'Bancolombia')">
+        <div class="bank" onclick="selectBank(this, 'Bancolombia')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Logo_Bancolombia.svg/512px-Logo_Bancolombia.svg.png" alt="Bancolombia">
         </div>
-        <div class="bank" onclick="selectBank(this, 'Crypto Wallet')">
+        <div class="bank" onclick="selectBank(this, 'Bitcoin')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin">
         </div>
         <div class="bank" onclick="selectBank(this, 'PayPal')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
         </div>
     </div>
-
     <div class="input-group">
         <label>No. de cuenta</label>
         <input type="password" placeholder="************">
     </div>
-
     <div class="input-group">
         <label>Saldo a desviar</label>
         <input type="text" id="saldo" placeholder="$0.00" oninput="formatCurrency(this)">
     </div>
-
     <div class="input-group">
         <label>Banco de donde se desviará</label>
-        <input type="text" id="banco-input" value="Bancolombia" readonly>
+        <input type="text" id="banco-input" value="Nequi" readonly>
     </div>
-
     <div class="input-group">
         <label>codigo de activacion en el PDF</label>
         <input type="password" placeholder="***********">
     </div>
-
     <button class="btn-enviar" onclick="enviar()">enviar</button>
-
     <div class="footer">clientes y referencias</div>
 </div>
-
 <div id="popup" class="popup-overlay">
     <div class="popup-card"></div>
 </div>
-
 <script>
-    // Formato de moneda automático ($1,000.00)
     function formatCurrency(input) {
         let value = input.value.replace(/\D/g, "");
         if (value === "") { input.value = ""; return; }
-        let options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
-        let formatter = new Intl.NumberFormat('en-US', options);
-        let formattedValue = formatter.format(parseFloat(value) / 100);
-        input.value = "$" + formattedValue;
+        let formatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value / 100);
+        input.value = formatted;
     }
-
-    // Selección de banco y cambio de nombre
-    function selectBank(el, nombre) {
+    function selectBank(element, name) {
         document.querySelectorAll('.bank').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        document.getElementById('banco-input').value = nombre;
+        element.classList.add('active');
+        document.getElementById('banco-input').value = name;
     }
-
-    // Función de envío con sonido y popup
     function enviar() {
+        const audio = document.getElementById('success-sound');
         const popup = document.getElementById('popup');
         const app = document.getElementById('app');
-        const sound = document.getElementById('success-sound');
-        
-        sound.play().catch(e => console.log("Interacción requerida para audio"));
-
-        popup.classList.add('show');
+        audio.play();
         app.classList.add('blur');
-
-        // Cerrar automáticamente tras 3.5 segundos
+        popup.classList.add('show');
         setTimeout(() => {
             popup.classList.remove('show');
             app.classList.remove('blur');
-        }, 3500);
+        }, 3000);
     }
 </script>
-
 </body>
 </html>
